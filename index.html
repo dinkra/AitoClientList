@@ -4,9 +4,9 @@
 
 	<!-- <link rel="stylesheet" href="style.css"> -->
 
-  	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
   	<script src="underscore-min.js"></script>
-  	<script src="http://cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
+  	<script src="//cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
   	<script src="vert.x-2.1.5/client/vertxbus-2.1.js"></script>
   	<script src="moment.js"></script>
   	<!-- <script src="xapp.js"></script> -->
@@ -17,8 +17,6 @@
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="bower_components/polymer/polymer.html">
     
-
-    <link rel="import" href="aito-list.html">
     <link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
     <link rel="import" href="bower_components/paper-input/paper-input.html">
     <link rel="import" href="bower_components/paper-button/paper-button.html">
@@ -174,7 +172,12 @@
 
 
 
-
+    var bus = new vertx.EventBus('http://54.78.0.58:8888/eventbus');
+    bus.onopen = function() {
+        bus.send('aito/deployer/status', {}, function(aito) {
+            console.log(aito);
+        });
+    };
 
 
 
