@@ -172,12 +172,12 @@
 
 
 
-    var bus = new vertx.EventBus('http://54.78.0.58:8888/eventbus',{headers:{Origin:"null"}});
-    bus.onopen = function() {
-        bus.send('aito/deployer/status', {}, function(aito) {
-            console.log(aito);
-        });
-    };
+    var bus = new vertx.EventBus('http://54.78.0.58:8080/eventbus');
+        bus.onopen = function() {
+            bus.send('aito/deployer/status', {}, function(aito) {
+                console.log(aito);
+            });
+        };
 
 
 
