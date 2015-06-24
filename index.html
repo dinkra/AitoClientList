@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- <link rel="stylesheet" href="style.css"> -->
+
+  	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  	<script src="underscore-min.js"></script>
+  	<script src="http://cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
+  	<script src="vert.x-2.1.5/client/vertxbus-2.1.js"></script>
+  	<script src="moment.js"></script>
+  	<!-- <script src="xapp.js"></script> -->
+  	<!-- <link rel="import"
+      	  href="http://www.polymer-project.org/1.0/samples/components/polymer/polymer.html">
+ -->
+
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="bower_components/polymer/polymer.html">
+    
+
+    <link rel="import" href="aito-list.html">
+    <link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="bower_components/paper-input/paper-input.html">
+    <link rel="import" href="bower_components/paper-button/paper-button.html">
+    <link rel="import" href="bower_components/paper-styles/paper-styles.html">
+     <link rel="import" href="bower_components/paper-styles/demo-pages.html">
+    <link rel="import" href="bower_components/iron-form/iron-form.html">
+
+
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style is="custom-style">
+		#main {
+			width: 800px;
+			margin: 0 auto;
+			xbackground-color: grey;
+		}
+
+		section > paper-button {
+	    	background-color: var(--google-grey-300);
+	    	padding: 5px;
+	    	float: right;
+	    }
+
+		section > paper-button:hover {
+			background-color: var(--paper-light-blue-200);
+			padding: 5px;
+		}
+
+		paper-dialog {
+			max-height: 600px;
+			max-width: 620px;
+			position: absolute;
+			top: 16px;
+			z-index: 100;
+		}
+
+		paper-dialog.colored {
+			border: 2px solid;
+			border-color: var(--paper-green-500);
+			background-color: var(--paper-light-green-50);
+			color: var(--paper-green-500);
+		}
+
+		paper-dialog.size-position {
+			position: fixed;
+			top: 16px;
+			right: 16px;
+		}
+
+		paper-dialog.size-position {
+			width: 100px;
+			height: 800px;
+		}
+
+		.wide {
+			width: 600px;
+			margin: 5px;
+		}
+
+		ul {
+			list-style-type: none;
+		}
+
+	</style>
+</head>
+<body>
+<div id="main">
+	<section onclick="clickHandler(event)">
+	<paper-button data-dialog="dialog">modal dialog</paper-button>
+	<br><br>
+
+	  
+	    <h4>Submitted form data</h4>
+		<ul id='clients'>
+		    
+	    </ul>
+	      <!-- <div class="horizontal-section wide">
+	        <div class="output"></div>
+	      </div> -->
+
+
+		<paper-dialog id="dialog">
+		    <div>
+		      <h4>method="post"</h4>
+		      <div class="horizontal-section">
+		        <form is="iron-form" id="formPost" method="post" action="/">
+		          <paper-input name="name" label="Name" required ></paper-input>
+		          <paper-input label="Email" type="email" name="email"></paper-input>
+    			  <paper-input label="Password" type="password" name="password"></paper-input>
+		          <!-- <p>Duplicate name <input name="name" required></p> -->
+		          <br><br>
+
+		          <label>Cars</label>
+		          <select name="cars">
+		            <option value="volvo">Volvo</option>
+		            <option value="saab">Saab</option>
+		            <option value="fiat">Fiat</option>
+		            <option value="audi">Audi</option>
+		          </select>
+
+		          <br><br>
+
+		          <paper-button raised
+		              onclick="clickHandlerForm(event)" dialog-confirm autofocus onclick="clickHandler(event)">Submit</paper-button>
+		        </form>
+		      </div>
+		    </div>
+	      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+	      
+	    </paper-dialog>
+
+		
+
+	</section>
+		
+	</div>
+
+	<script>
+
+
+    function clickHandler(e) {
+		var button = e.target;
+		while (!button.hasAttribute('data-dialog') && button !== document.body) {
+			button = button.parentElement;
+		}
+
+		if (!button.hasAttribute('data-dialog')) {
+			return;
+		}
+
+		var id = button.getAttribute('data-dialog');
+		var dialog = document.getElementById(id);
+		if (dialog) {
+			dialog.open();
+		}
+    }
+
+    //document.getElementById('formGet').addEventListener('iron-form-submit', display);
+    document.getElementById('formPost').addEventListener('iron-form-submit', display);
+
+    function display(event) {
+    	console.log(event);
+      	//var output = document.getElementsByClassName('output');
+      	$( "#clients" ).append( "<li class=" + "'horizontal-section wide output'" + ">" + event.detail.name + "</li>");
+      	//$(".output").text(event.detail.name);
+      	//output.innerHTML = JSON.stringify(event.detail.name);
+    }
+
+    function clickHandlerForm(event) {
+    	Polymer.dom(event).localTarget.parentElement.submit();
+    }
+
+
+
+
+
+
+
+		// var el = document.querySelector('#a');
+
+		// var bus = new vertx.EventBus('http://54.170.94.30:8888/eventbus');
+  //       bus.onopen = function() {
+  //           bus.send('aito/telegraaf/get-aito', {}, function(aito) {
+  //               //console.log(aito.items);
+  //               //var el = new AitoList(aito.items);
+  //               el.items = filterItems(aito.items);
+  //               console.log(el.items);
+  //           });
+  //       };
+
+		// var el = document.querySelector('#a');
+		// var el1 = document.querySelector('#b');
+		// $.getJSON('get-aito1.json', function(data){
+		// 	var items = filterItems(data.items);
+		// 	el.items = items;
+		// 	el.dropDownData = data['item-scoring'];
+		// 	el1.items = items;
+		// 	el1.dropDownData = data['item-scoring'];
+		// 	//console.log(data.items);
+		// 	// el.items = _.sortBy(data.items, function(o) { return Date.parse(o.published) })
+		// });
+
+		// function filterItems(array) {
+		// 	var newArray = [];
+		// 	for (var i = 0; i < 23; i++) {
+		// 		if ((array[i].stats.length > 1)) {
+		// 			if ((array[i].stats[1].history)) {
+		// 				newArray.push(array[i]);
+		// 			};	
+		// 		} else {
+		// 			//console.log(array[i]);
+		// 		}
+		// 	};
+		// 	console.log(newArray);
+		// 	return newArray;
+			
+		// };
+
+	// function sortByPublishedDate(array) {
+	// 	for (var i = (array.length - 1); i >= 0; i--) {
+ //      		for (var j = 1; j <= i; j++) {
+ //      			var a = Date.parse(array[j-1].published);
+ //      			var b = Date.parse(array[j].published);
+ //         		if (a > b) {
+	// 				var temp = array[j-1];
+	// 				array[j-1] = array[j];
+	// 				array[j] = temp;
+ //   				} 
+ //   			} 
+ //   		} 
+
+ //   		return array;
+	
+	// 	for (var i = 0; i < array.length; i++) {
+	// 		console.log(array[i].published);
+	// 	};
+	// }
+	</script>
+
+</body>
+</html>
